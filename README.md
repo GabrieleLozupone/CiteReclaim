@@ -23,7 +23,8 @@ versions, which is why the gap is easy to miss.
 
 CiteReclaim finds these citations using free, public scholarly metadata, tells you which
 ones are likely affected and why, and produces an evidence pack in the format Scopus support
-asks for. You review it and send it yourself.
+asks for. You review it and send it yourself; whether Scopus applies the correction is up to
+Scopus (see [Will Scopus accept the request?](#will-scopus-accept-the-request)).
 
 ```mermaid
 flowchart LR
@@ -132,6 +133,8 @@ For each paper you track (arXiv id and/or final journal DOI), CiteReclaim:
   Apify, Oxylabs, ...).
 - It does **not** submit anything to Elsevier. The support export is a file for *you* to
   review and send.
+- It does **not** guarantee that Scopus will make the correction. See
+  [Will Scopus accept the request?](#will-scopus-accept-the-request)
 - It does **not** claim that a citation is definitively missing from Scopus unless the Scopus
   API shows the citing article indexed **and** absent from the Version of Record's citers.
 - It does **not** treat "journal is in the Scopus Source List" as proof that an article is
@@ -609,6 +612,35 @@ Excel file.
 
 **Nothing is sent anywhere.** You review the files and submit them through the Scopus support
 form yourself.
+
+### Will Scopus accept the request?
+
+**There is no guarantee.** Scopus decides case by case, and this tool cannot predict the
+outcome.
+
+What supports the request:
+
+- Scopus has an official channel for exactly this: the support form's *Citation
+  Corrections* reason, for citations that are missing because documents "are incorrectly
+  linked" ([Scopus Support](https://www.elsevier.support/scopus/answer/how-can-i-add-missing-citations)).
+- Corrections require both the citing and the cited article to be in Scopus. The support
+  pack includes only citing articles that the Scopus API confirms as indexed, and the cited
+  article is your published Version of Record.
+- The request asks only to link references to the published article. It does not ask Scopus
+  to merge records.
+
+What may lead Scopus to decline:
+
+- Scopus states that "neither citations to-and-from the preprints, nor links with the final
+  version of the article are captured", and that linking preprints to published versions
+  "is being evaluated"
+  ([Scopus Support](https://www.elsevier.support/scopus/answer/what-are-preprints)).
+  Support staff may therefore answer that the reference cites a different document (the
+  preprint) and keep it linked as written.
+
+Processing usually takes a few weeks. Run the tool again afterwards: citations that Scopus has
+linked become `OK` and drop out of the support pack. If a citation you reported is still
+listed, reply to your existing ticket rather than opening a new one.
 
 General exports:
 
