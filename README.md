@@ -23,8 +23,12 @@ versions, which is why the gap is easy to miss.
 
 CiteReclaim finds these citations using free, public scholarly metadata, tells you which
 ones are likely affected and why, and produces an evidence pack in the format Scopus support
-asks for. You review it and send it yourself; whether Scopus applies the correction is up to
-Scopus (see [Will Scopus accept the request?](#will-scopus-accept-the-request)).
+asks for. You review it and send it yourself.
+
+> [!IMPORTANT]
+> Scopus decides whether to apply each correction, and acceptance is not guaranteed: Scopus
+> currently does not link preprint citations to published versions on its own. See
+> [Will Scopus accept the request?](#will-scopus-accept-the-request)
 
 ```mermaid
 flowchart LR
