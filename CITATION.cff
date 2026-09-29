@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using these metadata."
+title: "citation-reconciler: find citations to arXiv preprints that Scopus does not attribute to the published version"
+type: software
+authors:
+  - family-names: Lozupone
+    given-names: Gabriele
+version: 0.1.0
+license: MIT
+keywords:
+  - scopus
+  - arxiv
+  - citations
+  - bibliometrics
+  - preprints

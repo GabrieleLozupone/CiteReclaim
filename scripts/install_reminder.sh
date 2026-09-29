@@ -1,29 +1,39 @@
 #!/usr/bin/env bash
-# Installa (o rimuove) il promemoria mensile di citation-reconciler su macOS.
-# Crea un LaunchAgent che il 1° di ogni mese alle 10:00 esegue scripts/remind.sh.
+# Installs (or removes) a monthly citation-reconciler reminder on macOS.
+# Creates a LaunchAgent that runs scripts/remind.sh on day 1 of every month at 10:00.
 #
-# Uso:
-#   ./scripts/install_reminder.sh              # installa / aggiorna
-#   ./scripts/install_reminder.sh --uninstall  # rimuove
-#   ./scripts/install_reminder.sh --test       # mostra subito il promemoria
+# Usage:
+#   ./scripts/install_reminder.sh              # install / update
+#   ./scripts/install_reminder.sh --uninstall  # remove
+#   ./scripts/install_reminder.sh --test       # show the reminder now
 #
-# Variabili opzionali: DAY (default 1), HOUR (default 10), MINUTE (default 0)
-#   es. DAY=15 HOUR=9 ./scripts/install_reminder.sh
+# Optional variables:
+#   DAY (default 1), HOUR (default 10), MINUTE (default 0)
+#   BROWSER_APP   app for Google Scholar (default: the system browser)
+#   TERMINAL_APP  terminal app (default: Terminal)
+#   e.g. DAY=15 HOUR=9 BROWSER_APP="Google Chrome" TERMINAL_APP=iTerm ./scripts/install_reminder.sh
 set -euo pipefail
 
-LABEL="it.unicas.citation-reconciler.reminder"
+LABEL="${LABEL:-io.github.citation-reconciler.reminder}"
 PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
 DOMAIN="gui/$(id -u)"
 SCRIPT="$(cd "$(dirname "$0")" && pwd)/remind.sh"
 DAY="${DAY:-1}"
 HOUR="${HOUR:-10}"
 MINUTE="${MINUTE:-0}"
+BROWSER_APP="${BROWSER_APP:-}"
+TERMINAL_APP="${TERMINAL_APP:-Terminal}"
+
+if [[ "$(uname)" != "Darwin" ]]; then
+    echo "This reminder uses launchd and only works on macOS." >&2
+    exit 1
+fi
 
 case "${1:-}" in
     --uninstall)
         launchctl bootout "$DOMAIN/$LABEL" 2>/dev/null || true
         rm -f "$PLIST"
-        echo "Promemoria rimosso."
+        echo "Reminder removed."
         exit 0
         ;;
     --test)
@@ -46,7 +56,14 @@ cat > "$PLIST" <<PLIST
     <array>
         <string>$SCRIPT</string>
     </array>
-    <!-- Il giorno $DAY di ogni mese alle $HOUR:$(printf %02d "$MINUTE") -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>BROWSER_APP</key>
+        <string>$BROWSER_APP</string>
+        <key>TERMINAL_APP</key>
+        <string>$TERMINAL_APP</string>
+    </dict>
+    <!-- Day $DAY of every month at $HOUR:$(printf %02d "$MINUTE") -->
     <key>StartCalendarInterval</key>
     <dict><key>Day</key><integer>$DAY</integer><key>Hour</key><integer>$HOUR</integer><key>Minute</key><integer>$MINUTE</integer></dict>
     <key>StandardErrorPath</key>
@@ -59,6 +76,6 @@ plutil -lint -s "$PLIST"
 launchctl bootout "$DOMAIN/$LABEL" 2>/dev/null || true
 launchctl bootstrap "$DOMAIN" "$PLIST"
 
-printf 'Promemoria installato: giorno %s di ogni mese alle %s:%02d\n' "$DAY" "$HOUR" "$MINUTE"
+printf 'Reminder installed: day %s of every month at %s:%02d\n' "$DAY" "$HOUR" "$MINUTE"
 echo "Script: $SCRIPT"
-echo "Prova: $0 --test"
+echo "Test it: $0 --test"

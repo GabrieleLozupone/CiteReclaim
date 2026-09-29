@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
-# Esegue l'intero flusso di citation-reconciler:
-#   init → aggiornamento Scopus Source List → import articoli → import Google Scholar
-#   (scholar_exports/<NOME>.bib|.csv|.json, se presenti) → sync → report → export
+# Runs the whole citation-reconciler workflow:
+#   init → Scopus Source List update → paper import → Google Scholar import
+#   (scholar_exports/<NAME>.bib|.csv|.json, if present) → sync → report → export
 #
-# Uso:
-#   ./run.sh                      # usa examples/papers.yaml
-#   ./run.sh miei_articoli.yaml   # usa un altro file YAML di articoli
+# Usage:
+#   ./run.sh                      # uses examples/papers.yaml
+#   ./run.sh my_papers.yaml       # uses another YAML file of papers
 #
-# Variabili opzionali:
-#   REFRESH=1 ./run.sh            # ignora la cache HTTP e riscarica tutto
-#   DETAILS=1 ./run.sh            # report con tutte le evidenze
+# Optional variables:
+#   REFRESH=1 ./run.sh            # bypass the HTTP cache and download everything again
+#   DETAILS=1 ./run.sh            # report with all the evidence
 set -euo pipefail
 
 cd "$(dirname "$0")"
 PAPERS_FILE="${1:-examples/papers.yaml}"
 
-# --- ambiente Python -------------------------------------------------------
+# --- Python environment -------------------------------------------------------
 if [[ ! -x .venv/bin/citation-reconciler ]]; then
-    echo "==> Creo il virtualenv e installo il pacchetto"
+    echo "==> Creating the virtualenv and installing the package"
     if command -v uv >/dev/null 2>&1; then
         uv venv -q -p 3.12 .venv
         uv pip install -q --python .venv/bin/python -e .
@@ -29,7 +29,7 @@ fi
 CR=.venv/bin/citation-reconciler
 
 if [[ ! -f "$PAPERS_FILE" ]]; then
-    echo "File articoli non trovato: $PAPERS_FILE" >&2
+    echo "Papers file not found: $PAPERS_FILE" >&2
     exit 1
 fi
 
@@ -38,20 +38,20 @@ SYNC_FLAGS=()
 REPORT_FLAGS=()
 [[ "${DETAILS:-0}" == "1" ]] && REPORT_FLAGS+=(--details)
 
-# --- flusso ----------------------------------------------------------------
-echo "==> Inizializzazione"
+# --- workflow ----------------------------------------------------------------
+echo "==> Initialising"
 "$CR" init >/dev/null
 
-echo "==> Scopus Source List (scaricata solo se più vecchia di 30 giorni)"
+echo "==> Scopus Source List (downloaded only if older than 30 days)"
 if ! "$CR" scopus-sources update; then
-    echo "!! Aggiornamento automatico fallito: continuo con la lista locale (se presente)." >&2
+    echo "!! Automatic update failed: continuing with the local list (if any)." >&2
 fi
 
-echo "==> Import articoli da $PAPERS_FILE"
+echo "==> Importing papers from $PAPERS_FILE"
 "$CR" paper import "$PAPERS_FILE"
 
-# Export di Google Scholar: scholar_exports/<NOME>.bib|.csv|.json (NOME = nome dell'articolo).
-# Le righe già importate vengono ignorate, quindi rilanciare è sicuro.
+# Google Scholar exports: scholar_exports/<NAME>.bib|.csv|.json (NAME = the paper's name).
+# Rows already imported are skipped, so re-running is safe.
 SCHOLAR_DIR="${SCHOLAR_DIR:-scholar_exports}"
 PAPER_NAMES=$("$CR" paper list --json | .venv/bin/python -c \
     "import json, sys; print('\n'.join(p['name'] for p in json.load(sys.stdin)))")
@@ -60,15 +60,15 @@ while IFS= read -r name; do
     for ext in bib csv json; do
         f="$SCHOLAR_DIR/$name.$ext"
         if [[ -f "$f" ]]; then
-            echo "==> Import Google Scholar per $name da $f"
+            echo "==> Importing Google Scholar results for $name from $f"
             "$CR" scholar import "$f" --paper "$name" --no-sync
         fi
     done
 done <<< "$PAPER_NAMES"
 
-echo "==> Sync citazioni (può richiedere qualche minuto)"
-# Un sync parziale (es. rate limit di Semantic Scholar) non deve fermare lo script.
-"$CR" sync --all "${SYNC_FLAGS[@]+"${SYNC_FLAGS[@]}"}" || echo "!! Alcuni sync hanno avuto errori; vedi sopra." >&2
+echo "==> Syncing citations (may take a few minutes)"
+# A partial sync (e.g. a Semantic Scholar rate limit) must not stop the script.
+"$CR" sync --all "${SYNC_FLAGS[@]+"${SYNC_FLAGS[@]}"}" || echo "!! Some syncs reported errors; see above." >&2
 
 echo "==> Report"
 "$CR" report --all "${REPORT_FLAGS[@]+"${REPORT_FLAGS[@]}"}"
@@ -82,4 +82,4 @@ while IFS= read -r name; do
 done <<< "$PAPER_NAMES"
 
 echo
-echo "Fatto. File generati in: $(pwd)/output/"
+echo "Done. Files written to: $(pwd)/output/"

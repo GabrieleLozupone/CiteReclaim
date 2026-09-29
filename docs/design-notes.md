@@ -1,4 +1,7 @@
-# Implementation plan — citation-reconciler
+# Design notes — citation-reconciler
+
+Background research on the external services and the module layout. The user-facing
+documentation is the [README](../README.md).
 
 ## Findings from current documentation (checked 2026-09-29)
 
@@ -25,14 +28,3 @@
 - `reporting.py` — Rich tables, summary, CSV/JSON export, Scopus-support evidence pack.
 - `cli.py` — Typer app.
 
-## Steps
-
-1. Scaffold (pyproject, config, db schema).
-2. HTTP layer + cache + tests.
-3. Normalisation/matching + tests.
-4. Providers + mocked tests.
-5. Scopus source list + tests.
-6. Classification / reconciliation / confidence + tests.
-7. Pipeline, CLI, reporting, export.
-8. README, .env.example, examples.
-9. Format, lint, test, smoke test against live APIs with the example papers.

@@ -323,6 +323,15 @@ citation-reconciler sync --all
 citation-reconciler report --all
 ```
 
+**One command for everything.** `run.sh` creates the virtualenv if needed, then runs init,
+the Source List update, paper import, Google Scholar import (see
+[section 13](#13-importing-google-scholar-results)), sync, report and all exports:
+
+```bash
+cp examples/papers.yaml my_papers.yaml   # replace the example papers with yours
+./run.sh my_papers.yaml                  # REFRESH=1 bypasses the cache, DETAILS=1 adds evidence
+```
+
 ## 12. Adding a paper
 
 ```bash
@@ -623,6 +632,24 @@ artifact or cache between runs. A ready-to-copy workflow is in
 
 No cloud deployment is needed; a laptop cron job is enough.
 
+**macOS monthly reminder.** Google Scholar has no API, so its exports cannot be automated.
+Instead, `scripts/install_reminder.sh` installs a LaunchAgent that shows a dialog on day 1 of
+every month at 10:00 with the steps to follow (export from Scholar, run `./run.sh`, send the
+files to Scopus support). The **Start** button opens Google Scholar, the `scholar_exports/`
+folder and a terminal in the project.
+
+```bash
+./scripts/install_reminder.sh                        # install or update
+./scripts/install_reminder.sh --test                 # show the reminder now
+./scripts/install_reminder.sh --uninstall            # remove it
+DAY=15 HOUR=9 BROWSER_APP="Google Chrome" TERMINAL_APP=iTerm ./scripts/install_reminder.sh
+```
+
+Citations that Scopus has linked in the meantime become `OK` and drop out of the support
+files, so each monthly run lists only what is still missing. A citation you have already
+reported may appear again until Scopus processes the request; keep a dated copy of each
+submitted `output/<NAME>/` folder to tell old requests from new ones.
+
 ## 19. Data privacy
 
 - Everything is stored **locally** in the SQLite database in your data directory: tracked
@@ -652,6 +679,9 @@ No cloud deployment is needed; a laptop cron job is enough.
 | Verbose HTTP logs | `citation-reconciler -v sync NAME` |
 
 ## 21. Architecture
+
+Background research on each external service (rate limits, auth, quirks) is in
+[docs/design-notes.md](docs/design-notes.md).
 
 ```text
 citation_reconciler/
@@ -709,7 +739,10 @@ runs without keys, with Scopus, with Scopus denied, and with OpenAlex down.
 
 ## 23. License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE). If the tool is useful in your work, you can cite it with the
+metadata in [CITATION.cff](CITATION.cff).
+
+The project is maintained on a best-effort basis. Issues and pull requests are welcome.
 
 Data obtained from Crossref, Semantic Scholar, OpenAlex and Elsevier remains subject to
 those providers' terms. Semantic Scholar and OpenAlex data carry their own licences (OpenAlex

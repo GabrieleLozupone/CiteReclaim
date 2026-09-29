@@ -9,7 +9,7 @@ description = "Discover citations to preprint and published versions of a work a
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"
-authors = [{ name = "citation-reconciler contributors" }]
+authors = [{ name = "Gabriele Lozupone" }]
 keywords = ["scopus", "arxiv", "citations", "bibliometrics", "crossref", "openalex", "semantic-scholar"]
 classifiers = [
     "Programming Language :: Python :: 3",
