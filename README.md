@@ -1,24 +1,53 @@
-# Citation Reconciler
+<h1 align="center">citereclaim</h1>
 
-This tool discovers citations to preprint and published versions of the same work and helps
-identify citations that may need reconciliation in Scopus.
+<p align="center">
+  <b>Find the citations Scopus misses because authors cited your arXiv preprint<br>
+  instead of the published paper, and get them linked back.</b>
+</p>
 
-A typical case: you posted a paper on arXiv, it was later published in a journal, and other
-authors keep citing the arXiv version. Scopus sometimes fails to attribute those citations to
-the journal article (the *Version of Record*), so the journal article's Scopus citation count
-is lower than it should be. `citation-reconciler` finds such citations using free, public
-scholarly metadata, tells you which ones are likely affected, and produces an evidence pack
-you can review and send to Scopus support yourself.
-
-```text
-citation-reconciler init
-citation-reconciler scopus-sources update
-citation-reconciler paper add --name LDAE --arxiv 2504.08635 --doi 10.1016/j.media.2026.103932
-citation-reconciler sync LDAE
-citation-reconciler report LDAE
-```
+<p align="center">
+  <a href="https://github.com/GabrieleLozupone/citereclaim/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/GabrieleLozupone/citereclaim/actions/workflows/ci.yml/badge.svg"></a>
+  <img alt="Python 3.12+" src="https://img.shields.io/badge/python-3.12%2B-3776AB">
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green"></a>
+  <a href="https://github.com/astral-sh/ruff"><img alt="Ruff" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json"></a>
+  <img alt="API keys: none required" src="https://img.shields.io/badge/API%20keys-none%20required-informational">
+</p>
 
 ---
+
+You posted a paper on arXiv, it was later published in a journal, and other authors keep
+citing the arXiv version. Scopus treats the preprint and the journal article (the *Version of
+Record*) as separate documents, so those citations often never reach the journal article and
+its Scopus citation count stays lower than it should be. Google Scholar merges the two
+versions, which is why the gap is easy to miss.
+
+`citereclaim` finds these citations using free, public scholarly metadata, tells you which
+ones are likely affected and why, and produces an evidence pack in the format Scopus support
+asks for. You review it and send it yourself.
+
+```mermaid
+flowchart LR
+    A["Your paper<br/>arXiv id + journal DOI"] --> B["Citing works<br/>Semantic Scholar · OpenAlex<br/>Scopus · Google Scholar export"]
+    B --> C["Which version is cited?<br/>reads each bibliography<br/>via Crossref"]
+    C --> D["Scopus check<br/>source coverage +<br/>citation linkage"]
+    D --> E["Evidence pack<br/>Excel attachment +<br/>support request text"]
+```
+
+### Quick start
+
+```bash
+pipx install git+https://github.com/GabrieleLozupone/citereclaim
+citereclaim init
+citereclaim scopus-sources update
+citereclaim paper add --name LDAE --arxiv 2504.08635 --doi 10.1016/j.media.2026.103932
+citereclaim sync LDAE
+citereclaim report LDAE
+citereclaim export-support LDAE      # → output/LDAE/scopus_reference_linking.xlsx
+```
+
+No API key is required. Adding a free OpenAlex key and your email for Crossref makes runs
+faster, and a Scopus API key (usually from your institution's network) turns "likely" into
+verified results. See [API keys](#5-optional-api-keys).
 
 ## Contents
 
@@ -50,7 +79,7 @@ citation-reconciler report LDAE
 
 ## 1. What the tool does
 
-For each paper you track (arXiv id and/or final journal DOI), `citation-reconciler`:
+For each paper you track (arXiv id and/or final journal DOI), `citereclaim`:
 
 1. **Resolves both versions.** It finds the preprint and the Version of Record in Crossref,
    Semantic Scholar and OpenAlex. These indexes sometimes merge the two versions into one
@@ -214,9 +243,9 @@ Current policies in detail:
   paper is attached to. If that is the Version of Record's EID, the row is `OK`. If it is
   another record, typically a separate record Scopus created for the arXiv preprint (type
   `originalReference/other`), the row is `LIKELY_MISSING_LINK`. The wrong EID goes into the
-  Excel file and the request text ("please link them to the published article, or merge the
-  preprint record with it"). This view usually needs institutional entitlement: run from
-  your university network/VPN. `citation-reconciler doctor` shows which Scopus features your
+  Excel file and the request text, which asks Scopus to link those references to the
+  published article. This view usually needs institutional entitlement: run from
+  your university network/VPN. `citereclaim doctor` shows which Scopus features your
   key and network allow. Articles the Scopus API confirms are **not** indexed are left out of
   the support pack.
 - **Cited-by count check (works with a basic key).** Many keys may not use `REFEID`
@@ -254,12 +283,21 @@ Current policies in detail:
 
 Requires **Python 3.12+**.
 
+To use the command-line tool only:
+
 ```bash
-git clone <this repository> citation-reconciler
-cd citation-reconciler
+pipx install git+https://github.com/GabrieleLozupone/citereclaim
+# or: uv tool install git+https://github.com/GabrieleLozupone/citereclaim
+```
+
+To work from a clone (needed for `run.sh`, the example files and the macOS reminder):
+
+```bash
+git clone https://github.com/GabrieleLozupone/citereclaim.git
+cd citereclaim
 python3.12 -m venv .venv && source .venv/bin/activate
 pip install -e .            # or: pip install -e ".[dev]" for tests/linting
-citation-reconciler --help
+citereclaim --help
 ```
 
 With [uv](https://github.com/astral-sh/uv):
@@ -292,35 +330,35 @@ ELSEVIER_INSTTOKEN=
 
 All values are optional. `.env` is in `.gitignore`, so **never commit keys**.
 
-Data lives in `~/.citation-reconciler/` by default: the SQLite database, the HTTP cache and
-the downloaded source list. Override it with `CITATION_RECONCILER_HOME=/path` or
-`citation-reconciler --home /path ...`.
+Data lives in `~/.citereclaim/` by default: the SQLite database, the HTTP cache and
+the downloaded source list. Override it with `CITERECLAIM_HOME=/path` or
+`citereclaim --home /path ...`.
 
 Cache lifetimes: DOI/work metadata 30 days, citation lists 7 days, title searches 30 days,
 Scopus API 7 days, Scopus Source List 30 days, and "not found" answers 1 day. Use
 `sync --refresh` to bypass the cache, `sync --offline` to use only the cache, and
 `cache stats` / `cache clear` to inspect it.
 
-`citation-reconciler doctor` shows what is configured and tests connectivity to every
+`citereclaim doctor` shows what is configured and tests connectivity to every
 provider.
 
 ## 11. Quick start
 
 ```bash
-citation-reconciler init
-citation-reconciler scopus-sources update           # ~25 MB download, once a month
-citation-reconciler paper add --name LDAE --arxiv 2504.08635 --doi 10.1016/j.media.2026.103932
-citation-reconciler sync LDAE
-citation-reconciler report LDAE
-citation-reconciler export-support LDAE             # evidence pack in output/LDAE/
+citereclaim init
+citereclaim scopus-sources update           # ~25 MB download, once a month
+citereclaim paper add --name LDAE --arxiv 2504.08635 --doi 10.1016/j.media.2026.103932
+citereclaim sync LDAE
+citereclaim report LDAE
+citereclaim export-support LDAE             # evidence pack in output/LDAE/
 ```
 
 Both example papers can be loaded at once:
 
 ```bash
-citation-reconciler paper import examples/papers.yaml
-citation-reconciler sync --all
-citation-reconciler report --all
+citereclaim paper import examples/papers.yaml
+citereclaim sync --all
+citereclaim report --all
 ```
 
 **One command for everything.** `run.sh` creates the virtualenv if needed, then runs init,
@@ -335,7 +373,7 @@ cp examples/papers.yaml my_papers.yaml   # replace the example papers with yours
 ## 12. Adding a paper
 
 ```bash
-citation-reconciler paper add \
+citereclaim paper add \
   --name AXIAL \
   --arxiv 2407.02418 \
   --doi 10.1186/s12911-026-03833-2
@@ -362,9 +400,9 @@ citation-reconciler paper add \
 3. Import the file:
 
 ```bash
-citation-reconciler scholar import cited_by.csv  --paper LDAE
-citation-reconciler scholar import cited_by.bib  --paper LDAE
-citation-reconciler scholar import cited_by.json --paper LDAE
+citereclaim scholar import cited_by.csv  --paper LDAE
+citereclaim scholar import cited_by.bib  --paper LDAE
+citereclaim scholar import cited_by.json --paper LDAE
 ```
 
 `--paper` can be omitted when only one paper is tracked. The import triggers a sync of that
@@ -394,10 +432,10 @@ are skipped, so you can just overwrite the file with a newer export and run agai
 ## 14. Updating the Scopus Source List
 
 ```bash
-citation-reconciler scopus-sources update           # skips if < 30 days old
-citation-reconciler scopus-sources update --force
-citation-reconciler scopus-sources status
-citation-reconciler scopus-sources lookup 1361-8415 # or an exact journal title
+citereclaim scopus-sources update           # skips if < 30 days old
+citereclaim scopus-sources update --force
+citereclaim scopus-sources status
+citereclaim scopus-sources lookup 1361-8415 # or an exact journal title
 ```
 
 `update` fetches <https://www.elsevier.com/products/scopus/content> after checking
@@ -410,7 +448,7 @@ If automatic discovery ever breaks (Elsevier redesigns the page), download the f
 from the same page and import it:
 
 ```bash
-citation-reconciler scopus-sources import ~/Downloads/ext_list_Aug_2026.xlsx
+citereclaim scopus-sources import ~/Downloads/ext_list_Aug_2026.xlsx
 ```
 
 `.xlsx` and `.csv` are accepted. The parser detects header rows and columns by name, not
@@ -422,11 +460,11 @@ Titles* (accepted but not yet indexed) are deliberately **not** treated as cover
 ## 15. Running a reconciliation
 
 ```bash
-citation-reconciler sync LDAE
-citation-reconciler sync --all
-citation-reconciler sync --all --quiet      # for cron
-citation-reconciler sync LDAE --json        # machine-readable run stats
-citation-reconciler sync LDAE --refresh     # ignore the HTTP cache
+citereclaim sync LDAE
+citereclaim sync --all
+citereclaim sync --all --quiet      # for cron
+citereclaim sync LDAE --json        # machine-readable run stats
+citereclaim sync LDAE --refresh     # ignore the HTTP cache
 ```
 
 A sync:
@@ -446,9 +484,9 @@ second run within the cache TTL makes almost no network requests.
 ## 16. Reading the report
 
 ```bash
-citation-reconciler report LDAE
-citation-reconciler report LDAE --details   # full evidence for every citation
-citation-reconciler report --all --json
+citereclaim report LDAE
+citereclaim report LDAE --details   # full evidence for every citation
+citereclaim report --all --json
 ```
 
 Example (abridged, real data, no API keys):
@@ -508,8 +546,8 @@ DOI was only attached by Crossref's automatic matcher, the row stays `CHECK_SCOP
 ## 17. Exporting evidence for Scopus support
 
 ```bash
-citation-reconciler export-support LDAE
-citation-reconciler export-support LDAE --cited-scopus-link "https://www.scopus.com/record/display.uri?eid=2-s2.0-..."
+citereclaim export-support LDAE
+citereclaim export-support LDAE --cited-scopus-link "https://www.scopus.com/record/display.uri?eid=2-s2.0-..."
 ```
 
 It writes four files to `output/LDAE/`:
@@ -559,10 +597,10 @@ example only `{"author": "Lozupone"}`). Neither citation graph can link such a w
 tool can tell which version it cites. If you see the citation in Scopus, add it by hand:
 
 ```bash
-citation-reconciler citation add --paper LDAE --doi 10.1016/j.neucom.2025.132111 \
+citereclaim citation add --paper LDAE --doi 10.1016/j.neucom.2025.132111 \
     --cites preprint --note "reference verified in Scopus"
-citation-reconciler citation list --paper LDAE
-citation-reconciler citation remove --paper LDAE --doi 10.1016/j.neucom.2025.132111
+citereclaim citation list --paper LDAE
+citereclaim citation remove --paper LDAE --doi 10.1016/j.neucom.2025.132111
 ```
 
 The work is enriched from Crossref like any other citation. Its cited version is taken from
@@ -575,8 +613,8 @@ form yourself.
 General exports:
 
 ```bash
-citation-reconciler export --format csv  --output report.csv
-citation-reconciler export --format json --output report.json --paper AXIAL
+citereclaim export --format csv  --output report.csv
+citereclaim export --format json --output report.json --paper AXIAL
 ```
 
 ## 18. Running periodically
@@ -587,7 +625,7 @@ run is a good fit.
 **cron** (Monday 06:00):
 
 ```cron
-0 6 * * 1  cd /home/me/citation-reconciler && .venv/bin/citation-reconciler scopus-sources update >/dev/null; .venv/bin/citation-reconciler sync --all --quiet && .venv/bin/citation-reconciler export --format csv --output /home/me/citations/report.csv
+0 6 * * 1  cd /home/me/citereclaim && .venv/bin/citereclaim scopus-sources update >/dev/null; .venv/bin/citereclaim sync --all --quiet && .venv/bin/citereclaim export --format csv --output /home/me/citations/report.csv
 ```
 
 `scopus-sources update` does nothing until the local list is 30 days old, so it is safe to run
@@ -597,20 +635,20 @@ variables in the crontab.
 **systemd timer**:
 
 ```ini
-# ~/.config/systemd/user/citation-reconciler.service
+# ~/.config/systemd/user/citereclaim.service
 [Unit]
-Description=citation-reconciler weekly sync
+Description=citereclaim weekly sync
 
 [Service]
 Type=oneshot
-WorkingDirectory=%h/citation-reconciler
-EnvironmentFile=%h/citation-reconciler/.env
-ExecStart=%h/citation-reconciler/.venv/bin/citation-reconciler sync --all --quiet
-ExecStartPost=%h/citation-reconciler/.venv/bin/citation-reconciler scopus-sources update
+WorkingDirectory=%h/citereclaim
+EnvironmentFile=%h/citereclaim/.env
+ExecStart=%h/citereclaim/.venv/bin/citereclaim sync --all --quiet
+ExecStartPost=%h/citereclaim/.venv/bin/citereclaim scopus-sources update
 
-# ~/.config/systemd/user/citation-reconciler.timer
+# ~/.config/systemd/user/citereclaim.timer
 [Unit]
-Description=Run citation-reconciler weekly
+Description=Run citereclaim weekly
 
 [Timer]
 OnCalendar=Mon *-*-* 06:00:00
@@ -621,7 +659,7 @@ WantedBy=timers.target
 ```
 
 ```bash
-systemctl --user daemon-reload && systemctl --user enable --now citation-reconciler.timer
+systemctl --user daemon-reload && systemctl --user enable --now citereclaim.timer
 ```
 
 **GitHub Actions** (optional; store keys as repository secrets). Scopus API keys are usually
@@ -669,14 +707,14 @@ submitted `output/<NAME>/` folder to tell old requests from new ones.
 |---------|-------------|
 | `semantic scholar ... RateLimited: HTTP 429` | Anonymous S2 traffic shares one pool. The tool backs off and continues; the run is `partial` and earlier results are kept. Re-run later or set `SEMANTIC_SCHOLAR_API_KEY`. |
 | OpenAlex 429 / budget exhausted | No-key budget is $0.10/day. Set a free `OPENALEX_API_KEY`. |
-| `Scopus Source List not loaded` | Run `citation-reconciler scopus-sources update` (or `import FILE`). |
+| `Scopus Source List not loaded` | Run `citereclaim scopus-sources update` (or `import FILE`). |
 | `Automatic update failed` | Elsevier changed the page. Download the "Source title list" `.xlsx` manually and run `scopus-sources import FILE`. |
-| `SCOPUS_PERMISSION_DENIED` | The key is invalid, or you are off-campus without `ELSEVIER_INSTTOKEN`. Check with `citation-reconciler doctor`. |
+| `SCOPUS_PERMISSION_DENIED` | The key is invalid, or you are off-campus without `ELSEVIER_INSTTOKEN`. Check with `citereclaim doctor`. |
 | Many `UNKNOWN` actions | Usually conference papers without ISSN/ISBN. Look them up in Scopus manually. |
 | Target `?` (UNKNOWN) | The citing publisher did not deposit references with Crossref. The version cannot be determined from open data; check the PDF. |
 | A duplicate appears twice with ⚑ | Deliberately not auto-merged (conflicting DOIs or insufficient evidence). Check with `report --details`. |
-| Need a completely fresh fetch | `citation-reconciler sync NAME --refresh` or `cache clear`. |
-| Verbose HTTP logs | `citation-reconciler -v sync NAME` |
+| Need a completely fresh fetch | `citereclaim sync NAME --refresh` or `cache clear`. |
+| Verbose HTTP logs | `citereclaim -v sync NAME` |
 
 ## 21. Architecture
 
@@ -684,7 +722,7 @@ Background research on each external service (rate limits, auth, quirks) is in
 [docs/design-notes.md](docs/design-notes.md).
 
 ```text
-citation_reconciler/
+citereclaim/
   cli.py              Typer commands, Rich output
   config.py           env/.env settings, TTLs, User-Agent
   db.py               SQLite schema + repository (papers, paper_versions, works, citations,

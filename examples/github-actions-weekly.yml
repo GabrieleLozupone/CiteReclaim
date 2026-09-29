@@ -1,8 +1,8 @@
-# Copy to .github/workflows/citation-reconciler.yml in a PRIVATE repository.
+# Copy to .github/workflows/citereclaim.yml in a PRIVATE repository.
 # Configure secrets: CROSSREF_MAILTO, OPENALEX_API_KEY, SEMANTIC_SCHOLAR_API_KEY
 # (and ELSEVIER_API_KEY / ELSEVIER_INSTTOKEN only if your entitlement allows use
 # from GitHub-hosted runners — Scopus keys are usually IP-bound to your institution).
-name: citation-reconciler weekly
+name: citereclaim weekly
 
 on:
   schedule:
@@ -13,7 +13,7 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     env:
-      CITATION_RECONCILER_HOME: ${{ github.workspace }}/.citation-reconciler
+      CITERECLAIM_HOME: ${{ github.workspace }}/.citereclaim
       CROSSREF_MAILTO: ${{ secrets.CROSSREF_MAILTO }}
       OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
       SEMANTIC_SCHOLAR_API_KEY: ${{ secrets.SEMANTIC_SCHOLAR_API_KEY }}
@@ -27,18 +27,18 @@ jobs:
       - name: Restore database and HTTP cache
         uses: actions/cache@v4
         with:
-          path: .citation-reconciler
+          path: .citereclaim
           key: citrec-${{ github.run_id }}
           restore-keys: citrec-
       - run: pip install .
-      - run: citation-reconciler init
-      - run: citation-reconciler scopus-sources update
-      - run: citation-reconciler paper import examples/papers.yaml
-      - run: citation-reconciler sync --all --quiet
+      - run: citereclaim init
+      - run: citereclaim scopus-sources update
+      - run: citereclaim paper import examples/papers.yaml
+      - run: citereclaim sync --all --quiet
       - run: |
-          citation-reconciler export --format csv --output output/report.csv
-          for p in $(citation-reconciler paper list --json | python -c "import json,sys;print(' '.join(p['name'] for p in json.load(sys.stdin)))"); do
-            citation-reconciler export-support "$p"
+          citereclaim export --format csv --output output/report.csv
+          for p in $(citereclaim paper list --json | python -c "import json,sys;print(' '.join(p['name'] for p in json.load(sys.stdin)))"); do
+            citereclaim export-support "$p"
           done
       - uses: actions/upload-artifact@v4
         with:

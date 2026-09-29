@@ -1,5 +1,5 @@
-from citation_reconciler.matching import EntityResolver, compare_records
-from citation_reconciler.models import ExternalIds, PublicationType, WorkRecord
+from citereclaim.matching import EntityResolver, compare_records
+from citereclaim.models import ExternalIds, PublicationType, WorkRecord
 
 
 def rec(title, doi=None, year=2026, authors=("Ana Rossi",), source="openalex", **ids):

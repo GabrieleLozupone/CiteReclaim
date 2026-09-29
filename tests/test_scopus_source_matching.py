@@ -3,8 +3,8 @@ from pathlib import Path
 import openpyxl
 import pytest
 
-from citation_reconciler.models import ScopusSourceStatus, WorkRecord
-from citation_reconciler.providers import scopus_sources as ss
+from citereclaim.models import ScopusSourceStatus, WorkRecord
+from citereclaim.providers import scopus_sources as ss
 
 
 def build_xlsx(path: Path) -> Path:

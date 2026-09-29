@@ -486,7 +486,7 @@ class Syncer:
         index = SourceIndex(self.db)
         if not index.loaded:
             self.warnings.append(
-                "Scopus Source List not loaded: run `citation-reconciler scopus-sources update`"
+                "Scopus Source List not loaded: run `citereclaim scopus-sources update`"
             )
         manual_rows = self.db.manual_citations(paper.id)
         keep: set[int] = set()

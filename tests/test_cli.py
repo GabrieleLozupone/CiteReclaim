@@ -2,15 +2,13 @@ import json
 
 from typer.testing import CliRunner
 
-from citation_reconciler.cli import app
+from citereclaim.cli import app
 
 runner = CliRunner()
 
 
 def invoke(tmp_path, *args):
-    return runner.invoke(
-        app, ["--home", str(tmp_path / "h"), *args], env={"CITATION_RECONCILER_HOME": ""}
-    )
+    return runner.invoke(app, ["--home", str(tmp_path / "h"), *args], env={"CITERECLAIM_HOME": ""})
 
 
 def test_help():

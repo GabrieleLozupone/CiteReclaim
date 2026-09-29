@@ -7,15 +7,15 @@ import httpx
 import openpyxl
 import pytest
 
-from citation_reconciler.models import (
+from citereclaim.models import (
     Action,
     ScopusArticleStatus,
     TargetVersion,
     TrackedPaper,
 )
-from citation_reconciler.pipeline import Providers, Syncer
-from citation_reconciler.providers import scopus_sources
-from citation_reconciler.reporting import export_support, report_json
+from citereclaim.pipeline import Providers, Syncer
+from citereclaim.providers import scopus_sources
+from citereclaim.reporting import export_support, report_json
 
 from .conftest import load_fixture
 
@@ -263,7 +263,7 @@ def test_openalex_unavailable_keeps_going_and_does_not_prune(settings, db, tmp_p
 
 
 def test_scholar_import_is_merged(settings, db, tmp_path):
-    from citation_reconciler.providers.scholar_import import parse_file, row_hash
+    from citereclaim.providers.scholar_import import parse_file, row_hash
 
     from .conftest import FIXTURES
 

@@ -2,12 +2,12 @@
 
 import pytest
 
-from citation_reconciler.config import load_settings
-from citation_reconciler.db import Database
-from citation_reconciler.providers.crossref import CrossrefClient
-from citation_reconciler.providers.openalex import OpenAlexClient
-from citation_reconciler.providers.scopus_sources import CONTENT_PAGE, discover_download_url
-from citation_reconciler.providers.semantic_scholar import SemanticScholarClient
+from citereclaim.config import load_settings
+from citereclaim.db import Database
+from citereclaim.providers.crossref import CrossrefClient
+from citereclaim.providers.openalex import OpenAlexClient
+from citereclaim.providers.scopus_sources import CONTENT_PAGE, discover_download_url
+from citereclaim.providers.semantic_scholar import SemanticScholarClient
 
 pytestmark = pytest.mark.integration
 
@@ -41,7 +41,7 @@ def test_scopus_source_list_discovery_live():
 
     page = httpx.get(
         CONTENT_PAGE,
-        headers={"User-Agent": "citation-reconciler-tests"},
+        headers={"User-Agent": "citereclaim-tests"},
         follow_redirects=True,
         timeout=60,
     )

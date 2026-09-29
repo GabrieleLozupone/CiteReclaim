@@ -558,9 +558,7 @@ class SourceIndex:
         if not self.loaded:
             return SourceMatch(
                 status=ScopusSourceStatus.LIST_NOT_LOADED,
-                evidence=[
-                    "Scopus Source List not loaded; run `citation-reconciler scopus-sources update`"
-                ],
+                evidence=["Scopus Source List not loaded; run `citereclaim scopus-sources update`"],
             )
         evidence: list[str] = []
         for issn in work.issns:

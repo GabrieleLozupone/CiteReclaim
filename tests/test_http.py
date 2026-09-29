@@ -2,7 +2,7 @@ import httpx
 import pytest
 import respx
 
-from citation_reconciler.providers.base import (
+from citereclaim.providers.base import (
     HttpClient,
     PermissionDenied,
     ProviderUnavailable,
@@ -158,13 +158,13 @@ def test_offline_mode_without_cache(settings, db):
 def test_user_agent_identifies_tool(settings):
     settings.crossref_mailto = "me@example.org"
     ua = settings.user_agent()
-    assert ua.startswith("citation-reconciler/") and "mailto:me@example.org" in ua
+    assert ua.startswith("citereclaim/") and "mailto:me@example.org" in ua
 
 
 @respx.mock
 def test_crossref_search_client_error_is_reported(settings, db):
-    from citation_reconciler.providers.base import ProviderError
-    from citation_reconciler.providers.crossref import CrossrefClient
+    from citereclaim.providers.base import ProviderError
+    from citereclaim.providers.crossref import CrossrefClient
 
     respx.get("https://api.crossref.org/works").mock(return_value=httpx.Response(400))
     with pytest.raises(ProviderError):

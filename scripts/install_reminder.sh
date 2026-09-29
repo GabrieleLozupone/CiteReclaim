@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs (or removes) a monthly citation-reconciler reminder on macOS.
+# Installs (or removes) a monthly citereclaim reminder on macOS.
 # Creates a LaunchAgent that runs scripts/remind.sh on day 1 of every month at 10:00.
 #
 # Usage:
@@ -14,7 +14,7 @@
 #   e.g. DAY=15 HOUR=9 BROWSER_APP="Google Chrome" TERMINAL_APP=iTerm ./scripts/install_reminder.sh
 set -euo pipefail
 
-LABEL="${LABEL:-io.github.citation-reconciler.reminder}"
+LABEL="${LABEL:-io.github.citereclaim.reminder}"
 PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
 DOMAIN="gui/$(id -u)"
 SCRIPT="$(cd "$(dirname "$0")" && pwd)/remind.sh"
@@ -67,7 +67,7 @@ cat > "$PLIST" <<PLIST
     <key>StartCalendarInterval</key>
     <dict><key>Day</key><integer>$DAY</integer><key>Hour</key><integer>$HOUR</integer><key>Minute</key><integer>$MINUTE</integer></dict>
     <key>StandardErrorPath</key>
-    <string>/tmp/citation-reconciler-reminder.log</string>
+    <string>/tmp/citereclaim-reminder.log</string>
 </dict>
 </plist>
 PLIST

@@ -1,5 +1,5 @@
 # Example tracked papers. Import with:
-#   citation-reconciler paper import examples/papers.yaml
+#   citereclaim paper import examples/papers.yaml
 papers:
   - name: LDAE
     title: "Latent Diffusion Autoencoders"

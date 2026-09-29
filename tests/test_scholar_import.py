@@ -1,4 +1,4 @@
-from citation_reconciler.providers.scholar_import import (
+from citereclaim.providers.scholar_import import (
     parse_bibtex_text,
     parse_file,
     row_hash,

@@ -5,9 +5,9 @@ from pathlib import Path
 
 import pytest
 
-from citation_reconciler.config import Settings
-from citation_reconciler.db import Database
-from citation_reconciler.models import TrackedPaper
+from citereclaim.config import Settings
+from citereclaim.db import Database
+from citereclaim.models import TrackedPaper
 
 FIXTURES = Path(__file__).parent / "fixtures"
 

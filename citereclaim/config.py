@@ -18,10 +18,10 @@ ENV_KEYS = (
     "OPENALEX_MAILTO",
     "ELSEVIER_API_KEY",
     "ELSEVIER_INSTTOKEN",
-    "CITATION_RECONCILER_HOME",
+    "CITERECLAIM_HOME",
 )
 
-PROJECT_URL = "https://github.com/citation-reconciler/citation-reconciler"
+PROJECT_URL = "https://github.com/GabrieleLozupone/citereclaim"
 
 
 def load_dotenv(path: Path) -> dict[str, str]:
@@ -82,7 +82,7 @@ class Settings:
 
     @property
     def db_path(self) -> Path:
-        return self.home / "citation_reconciler.sqlite3"
+        return self.home / "citereclaim.sqlite3"
 
     @property
     def downloads_dir(self) -> Path:
@@ -97,7 +97,7 @@ class Settings:
         return self.crossref_mailto or self.openalex_mailto
 
     def user_agent(self) -> str:
-        ua = f"citation-reconciler/{__version__} (+{PROJECT_URL}"
+        ua = f"citereclaim/{__version__} (+{PROJECT_URL}"
         if self.contact_email:
             ua += f"; mailto:{self.contact_email}"
         return ua + ")"
@@ -114,12 +114,10 @@ def load_settings(home: Path | None = None, env_file: Path | None = None) -> Set
         return _clean(os.environ.get(key)) or _clean(file_values.get(key))
 
     home_value = home or (
-        Path(get("CITATION_RECONCILER_HOME")).expanduser()
-        if get("CITATION_RECONCILER_HOME")
-        else None
+        Path(get("CITERECLAIM_HOME")).expanduser() if get("CITERECLAIM_HOME") else None
     )
     return Settings(
-        home=home_value or Path.home() / ".citation-reconciler",
+        home=home_value or Path.home() / ".citereclaim",
         crossref_mailto=get("CROSSREF_MAILTO"),
         semantic_scholar_api_key=get("SEMANTIC_SCHOLAR_API_KEY"),
         openalex_api_key=get("OPENALEX_API_KEY"),

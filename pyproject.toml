@@ -3,7 +3,7 @@ requires = ["hatchling>=1.24"]
 build-backend = "hatchling.build"
 
 [project]
-name = "citation-reconciler"
+name = "citereclaim"
 version = "0.1.0"
 description = "Discover citations to preprint and published versions of a work and flag candidates for Scopus citation reconciliation."
 readme = "README.md"
@@ -33,10 +33,10 @@ dependencies = [
 dev = ["pytest>=8", "respx>=0.21", "ruff>=0.5"]
 
 [project.scripts]
-citation-reconciler = "citation_reconciler.cli:app"
+citereclaim = "citereclaim.cli:app"
 
 [tool.hatch.build.targets.wheel]
-packages = ["citation_reconciler"]
+packages = ["citereclaim"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

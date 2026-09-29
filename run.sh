@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Runs the whole citation-reconciler workflow:
+# Runs the whole citereclaim workflow:
 #   init → Scopus Source List update → paper import → Google Scholar import
 #   (scholar_exports/<NAME>.bib|.csv|.json, if present) → sync → report → export
 #
@@ -16,7 +16,7 @@ cd "$(dirname "$0")"
 PAPERS_FILE="${1:-examples/papers.yaml}"
 
 # --- Python environment -------------------------------------------------------
-if [[ ! -x .venv/bin/citation-reconciler ]]; then
+if [[ ! -x .venv/bin/citereclaim ]]; then
     echo "==> Creating the virtualenv and installing the package"
     if command -v uv >/dev/null 2>&1; then
         uv venv -q -p 3.12 .venv
@@ -26,7 +26,7 @@ if [[ ! -x .venv/bin/citation-reconciler ]]; then
         .venv/bin/pip install -q -e .
     fi
 fi
-CR=.venv/bin/citation-reconciler
+CR=.venv/bin/citereclaim
 
 if [[ ! -f "$PAPERS_FILE" ]]; then
     echo "Papers file not found: $PAPERS_FILE" >&2

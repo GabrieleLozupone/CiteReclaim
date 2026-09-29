@@ -1,6 +1,6 @@
 import pytest
 
-from citation_reconciler.matching import (
+from citereclaim.matching import (
     find_arxiv_ids,
     find_dois,
     is_preprint_doi,

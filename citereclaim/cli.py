@@ -28,7 +28,7 @@ console = Console()
 err = Console(stderr=True)
 
 app = typer.Typer(
-    name="citation-reconciler",
+    name="citereclaim",
     help="Discover citations to preprint and published versions of the same work and flag "
     "citations that may need reconciliation in Scopus.",
     no_args_is_help=True,
@@ -71,7 +71,7 @@ state = State()
 
 def _version(value: bool) -> None:
     if value:
-        console.print(f"citation-reconciler {__version__}")
+        console.print(f"citereclaim {__version__}")
         raise typer.Exit()
 
 
@@ -81,8 +81,8 @@ def main(
         Path | None,
         typer.Option(
             "--home",
-            help="Data directory (default: $CITATION_RECONCILER_HOME or ~/.citation-reconciler).",
-            envvar="CITATION_RECONCILER_HOME",
+            help="Data directory (default: $CITERECLAIM_HOME or ~/.citereclaim).",
+            envvar="CITERECLAIM_HOME",
         ),
     ] = None,
     verbose: Annotated[bool, typer.Option("--verbose", "-v", help="Verbose logging.")] = False,
@@ -103,7 +103,7 @@ def main(
 def _paper_or_exit(name: str) -> TrackedPaper:
     p = state.db.get_paper(name)
     if not p:
-        err.print(f"[red]Unknown paper '{name}'.[/red] Use `citation-reconciler paper list`.")
+        err.print(f"[red]Unknown paper '{name}'.[/red] Use `citereclaim paper list`.")
         raise typer.Exit(2)
     return p
 
@@ -135,7 +135,7 @@ def init() -> None:
     st = scopus_sources.status(state.db)
     if not st:
         console.print(
-            "\nNext: [b]citation-reconciler scopus-sources update[/b] "
+            "\nNext: [b]citereclaim scopus-sources update[/b] "
             "(downloads the free Scopus Source Title List, ~25 MB)"
         )
 
@@ -198,8 +198,7 @@ def doctor(
         )
     else:
         console.print(
-            "Scopus Source List: [red]not loaded[/red] — run "
-            "`citation-reconciler scopus-sources update`"
+            "Scopus Source List: [red]not loaded[/red] — run `citereclaim scopus-sources update`"
         )
     if offline:
         return
@@ -293,7 +292,7 @@ def paper_add(
         f"[green]{verb}[/green] {p.name}: arXiv {p.arxiv_id or '-'} "
         f"(preprint DOI {p.arxiv_doi or '-'}), final DOI {p.journal_doi or '-'}"
     )
-    console.print(f"Next: citation-reconciler sync {p.name}")
+    console.print(f"Next: citereclaim sync {p.name}")
 
 
 @paper_app.command("import")
@@ -533,7 +532,7 @@ def citation_remove(
     if not state.db.remove_manual_citation(target.id, normalize_doi(doi) or doi):
         err.print("[red]No such manual citation.[/red]")
         raise typer.Exit(2)
-    console.print("Removed. Run `citation-reconciler sync` to update the report.")
+    console.print("Removed. Run `citereclaim sync` to update the report.")
 
 
 @citation_app.command("list")
@@ -556,7 +555,7 @@ def _sync_one(target: TrackedPaper) -> None:
         providers.close()
     console.print(
         f"[green]✓[/green] {rep.stats['unique_works']} citing works now tracked. "
-        f"Run `citation-reconciler report {target.name}`."
+        f"Run `citereclaim report {target.name}`."
     )
 
 
@@ -621,7 +620,7 @@ def sources_update(
             f"[red]Automatic update failed:[/red] {exc}\n"
             "Download the 'Source title list' .xlsx manually from "
             f"{scopus_sources.CONTENT_PAGE} and run "
-            "`citation-reconciler scopus-sources import FILE`."
+            "`citereclaim scopus-sources import FILE`."
         )
         raise typer.Exit(1) from exc
     if res.get("skipped"):
@@ -660,7 +659,7 @@ def sources_status(as_json: Annotated[bool, typer.Option("--json")] = False) -> 
     if not st:
         console.print(
             "[yellow]No Scopus Source List loaded.[/yellow] Run "
-            "`citation-reconciler scopus-sources update`."
+            "`citereclaim scopus-sources update`."
         )
         raise typer.Exit(1)
     for k in (

@@ -1,6 +1,6 @@
-from citation_reconciler.models import ReferenceEntry, TargetVersion, WorkRecord
-from citation_reconciler.providers.crossref import parse_work
-from citation_reconciler.reconciliation import classify_target
+from citereclaim.models import ReferenceEntry, TargetVersion, WorkRecord
+from citereclaim.providers.crossref import parse_work
+from citereclaim.reconciliation import classify_target
 
 from .conftest import load_fixture
 

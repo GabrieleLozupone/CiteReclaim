@@ -1,4 +1,4 @@
-from citation_reconciler.matching import (
+from citereclaim.matching import (
     author_overlap,
     author_surname,
     first_author_matches,

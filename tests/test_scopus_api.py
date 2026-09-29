@@ -1,8 +1,8 @@
 import httpx
 import respx
 
-from citation_reconciler.models import ScopusArticleStatus
-from citation_reconciler.providers.scopus import SEARCH_URL, ScopusClient
+from citereclaim.models import ScopusArticleStatus
+from citereclaim.providers.scopus import SEARCH_URL, ScopusClient
 
 
 def scopus(settings, db):

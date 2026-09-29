@@ -1,6 +1,6 @@
 import pytest
 
-from citation_reconciler.models import (
+from citereclaim.models import (
     Action,
     ExternalIds,
     LinkageStatus,
@@ -13,7 +13,7 @@ from citation_reconciler.models import (
     TargetVersion,
     WorkRecord,
 )
-from citation_reconciler.reconciliation import decide_action, reconcile
+from citereclaim.reconciliation import decide_action, reconcile
 
 P, VOR, UNK, BOTH = (
     TargetVersion.PREPRINT,
@@ -143,7 +143,7 @@ def test_penalties_for_fuzzy_and_conflicts():
 
 
 def test_count_analysis_pigeonhole():
-    from citation_reconciler.reconciliation import analyse_counts
+    from citereclaim.reconciliation import analyse_counts
 
     a = analyse_counts(citedby=4, confirmed=5, explicit_vor=1)
     assert a.deficit == 1 and not a.all_others_unlinked
@@ -157,8 +157,8 @@ def test_count_analysis_pigeonhole():
 
 
 def test_scopus_reference_title_in_sourcetitle(paper):
-    from citation_reconciler.providers.scopus import ScopusReference
-    from citation_reconciler.reconciliation import scopus_reference_link
+    from citereclaim.providers.scopus import ScopusReference
+    from citereclaim.reconciliation import scopus_reference_link
 
     paper.title += " - a case study on Alzheimer's disease"  # published title is longer
     refs = [

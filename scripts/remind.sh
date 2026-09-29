@@ -19,7 +19,7 @@ MSG="Time to check for citations missing from Scopus.
 4. In the terminal run:  ./run.sh
 5. Send Scopus support output/<NAME>/scopus_support_request.txt + scopus_reference_linking.xlsx."
 
-BUTTON=$(osascript -e "button returned of (display dialog \"$MSG\" with title \"Citation Reconciler\" buttons {\"Later\", \"Start\"} default button \"Start\")" 2>/dev/null || echo "Later")
+BUTTON=$(osascript -e "button returned of (display dialog \"$MSG\" with title \"citereclaim\" buttons {\"Later\", \"Start\"} default button \"Start\")" 2>/dev/null || echo "Later")
 
 if [[ "$BUTTON" == "Start" ]]; then
     if [[ -n "${BROWSER_APP:-}" ]]; then

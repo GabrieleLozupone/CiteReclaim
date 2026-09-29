@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it using these metadata."
-title: "citation-reconciler: find citations to arXiv preprints that Scopus does not attribute to the published version"
+title: "citereclaim: find citations to arXiv preprints that Scopus does not attribute to the published version"
 type: software
 authors:
   - family-names: Lozupone
@@ -13,3 +13,4 @@ keywords:
   - citations
   - bibliometrics
   - preprints
+repository-code: "https://github.com/GabrieleLozupone/citereclaim"
