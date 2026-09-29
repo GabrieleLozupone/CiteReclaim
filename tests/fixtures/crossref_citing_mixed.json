@@ -1,0 +1,13 @@
+{"status": "ok", "message": {
+  "DOI": "10.3390/diagnostics16152385", "type": "journal-article",
+  "title": ["POWDR: Pathology-Preserving Outpainting with Wavelet Diffusion for 3D MRI"],
+  "author": [{"given": "Ana", "family": "Rossi"}, {"given": "Ben", "family": "Chen"}],
+  "container-title": ["Diagnostics"], "publisher": "MDPI AG",
+  "ISSN": ["2075-4418"], "issn-type": [{"value": "2075-4418", "type": "electronic"}],
+  "published-online": {"date-parts": [[2026, 7, 30]]},
+  "reference": [
+    {"key": "ref_1", "unstructured": "Ho, J. Denoising diffusion probabilistic models. NeurIPS 2020."},
+    {"key": "ref_6", "doi-asserted-by": "crossref", "DOI": "10.1016/j.media.2026.103932",
+     "unstructured": "Lozupone, G., Bria, A., Fontanella, F., Meijer, F.J.A., Stefano, C.D., and Huisman, H. (2025). Latent Diffusion Autoencoders: Toward Efficient and Meaningful Unsupervised Representation Learning in Medical Imaging. arXiv."}
+  ]
+}}

@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "citation-reconciler"
+version = "0.1.0"
+description = "Discover citations to preprint and published versions of a work and flag candidates for Scopus citation reconciliation."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+authors = [{ name = "citation-reconciler contributors" }]
+keywords = ["scopus", "arxiv", "citations", "bibliometrics", "crossref", "openalex", "semantic-scholar"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "httpx>=0.27",
+    "pydantic>=2.6",
+    "typer>=0.12",
+    "rich>=13.7",
+    "rapidfuzz>=3.6",
+    "openpyxl>=3.1",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "respx>=0.21", "ruff>=0.5"]
+
+[project.scripts]
+citation-reconciler = "citation_reconciler.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["citation_reconciler"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["integration: hits live public APIs; run manually with `pytest -m integration`"]
+addopts = "-m 'not integration'"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["B008", "RUF001", "RUF002", "RUF003"]

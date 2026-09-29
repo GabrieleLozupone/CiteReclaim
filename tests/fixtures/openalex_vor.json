@@ -1,0 +1,5 @@
+{"id": "https://openalex.org/W100", "doi": "https://doi.org/10.1016/j.media.2026.103932",
+ "title": "Latent diffusion autoencoders", "publication_year": 2026, "type": "article",
+ "primary_location": {"source": {"display_name": "Medical Image Analysis", "issn_l": "1361-8415", "issn": ["1361-8415"], "type": "journal"}},
+ "locations": [{"landing_page_url": "https://doi.org/10.1016/j.media.2026.103932"}],
+ "authorships": [{"author": {"display_name": "Gabriele Lozupone"}}], "referenced_works": []}

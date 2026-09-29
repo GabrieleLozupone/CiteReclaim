@@ -1,0 +1,14 @@
+{"meta": {"count": 3, "next_cursor": null, "cost_usd": 0.0001}, "results": [
+  {"id": "https://openalex.org/W201", "doi": "https://doi.org/10.3390/diagnostics16152385",
+   "title": "POWDR: pathology-preserving outpainting with wavelet diffusion for 3D MRI", "publication_year": 2026, "type": "article",
+   "primary_location": {"source": {"display_name": "Diagnostics", "issn_l": "2075-4418", "issn": ["2075-4418"], "type": "journal"}},
+   "authorships": [{"author": {"display_name": "Ana Rossi"}}], "referenced_works": ["https://openalex.org/W100"]},
+  {"id": "https://openalex.org/W202", "doi": "https://doi.org/10.1007/s10044-026-01765-1",
+   "title": "Generative latent representations of 3D brain MRI", "publication_year": 2026, "type": "article",
+   "primary_location": {"source": {"display_name": "Pattern Analysis and Applications", "issn_l": "1433-7541", "issn": ["1433-7541"], "type": "journal"}},
+   "authorships": [{"author": {"display_name": "Carla Verdi"}}], "referenced_works": ["https://openalex.org/W100"]},
+  {"id": "https://openalex.org/W203", "doi": "https://doi.org/10.9999/thesis.1",
+   "title": "A thesis about diffusion", "publication_year": 2025, "type": "dissertation",
+   "primary_location": {"source": null},
+   "authorships": [{"author": {"display_name": "Dan Blu"}}], "referenced_works": []}
+]}

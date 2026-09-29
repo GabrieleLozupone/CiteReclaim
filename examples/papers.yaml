@@ -1,0 +1,12 @@
+# Example tracked papers. Import with:
+#   citation-reconciler paper import examples/papers.yaml
+papers:
+  - name: LDAE
+    title: "Latent Diffusion Autoencoders"
+    arxiv_id: "2504.08635"
+    journal_doi: "10.1016/j.media.2026.103932"
+
+  - name: AXIAL
+    title: "AXIAL: Attention-based eXplainability for Interpretable Alzheimer's Localized Diagnosis using 2D CNNs on 3D MRI brain scans"
+    arxiv_id: "2407.02418"
+    journal_doi: "10.1186/s12911-026-03833-2"

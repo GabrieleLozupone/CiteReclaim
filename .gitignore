@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.citation-reconciler/
+output/
+*.sqlite3
+*.db
+scholar_exports/
+.DS_Store

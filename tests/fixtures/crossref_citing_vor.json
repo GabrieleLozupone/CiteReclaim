@@ -1,0 +1,12 @@
+{"status": "ok", "message": {
+  "DOI": "10.1007/s10044-026-01765-1", "type": "journal-article",
+  "title": ["Generative latent representations of 3D brain MRI"],
+  "author": [{"given": "Carla", "family": "Verdi"}],
+  "container-title": ["Pattern Analysis and Applications"], "publisher": "Springer",
+  "ISSN": ["1433-7541", "1433-755X"],
+  "issued": {"date-parts": [[2026]]},
+  "reference": [
+    {"key": "CR1", "doi-asserted-by": "publisher", "DOI": "10.1016/j.media.2026.103932",
+     "unstructured": "Lozupone G et al (2026) Latent diffusion autoencoders: toward efficient and meaningful unsupervised representation learning in medical imaging. Med Image Anal 108:103932. https://doi.org/10.1016/j.media.2026.103932"}
+  ]
+}}

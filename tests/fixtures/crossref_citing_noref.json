@@ -1,0 +1,6 @@
+{"status": "ok", "message": {
+  "DOI": "10.9999/thesis.1", "type": "dissertation",
+  "title": ["A thesis about diffusion"],
+  "author": [{"given": "Dan", "family": "Blu"}],
+  "issued": {"date-parts": [[2025]]}
+}}

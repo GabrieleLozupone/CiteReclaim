@@ -1,0 +1,8 @@
+{"status": "ok", "message": {
+  "DOI": "10.1016/j.media.2026.103932", "type": "journal-article",
+  "title": ["Latent diffusion autoencoders: Toward efficient and meaningful unsupervised representation learning in medical imaging"],
+  "author": [{"given": "Gabriele", "family": "Lozupone"}, {"given": "Alessandro", "family": "Bria"}],
+  "container-title": ["Medical Image Analysis"], "publisher": "Elsevier BV",
+  "ISSN": ["1361-8415"], "volume": "108", "article-number": "103932",
+  "issued": {"date-parts": [[2026, 1]]}
+}}

@@ -1,0 +1,13 @@
+{"offset": 0, "data": [
+  {"contexts": ["as shown by LDAE [6]"], "intents": ["background"], "citingPaper": {
+    "paperId": "S2A", "externalIds": {"DOI": "10.3390/diagnostics16152385"},
+    "title": "POWDR: Pathology-Preserving Outpainting with Wavelet Diffusion for 3D MRI", "year": 2026,
+    "venue": "Diagnostics", "publicationTypes": ["JournalArticle"], "journal": {"name": "Diagnostics"},
+    "publicationVenue": {"name": "Diagnostics", "issn": "2075-4418"},
+    "authors": [{"name": "Ana Rossi"}, {"name": "Ben Chen"}]}},
+  {"contexts": [], "citingPaper": {
+    "paperId": "S2B", "externalIds": {"ArXiv": "2601.14584", "DOI": "10.48550/arXiv.2601.14584"},
+    "title": "Anatomically Guided Latent Diffusion for Brain MRI Progression Modeling", "year": 2026,
+    "venue": "arXiv.org", "publicationTypes": null, "journal": {"name": "ArXiv"},
+    "authors": [{"name": "Eve Neri"}]}}
+]}

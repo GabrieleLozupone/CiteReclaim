@@ -1,0 +1,4 @@
+Cites,Authors,Title,Year,Source,Publisher,ArticleURL,DOI
+3,"A Rossi, B Chen","POWDR: Pathology-Preserving Outpainting with Wavelet Diffusion for 3D MRI",2026,Diagnostics,MDPI,https://www.mdpi.com/2075-4418/16/15/2385,
+0,"X Nobody","An unrelated workshop paper on something else",2025,Some Workshop,,https://example.org/paper,
+1,"C Verdi","Generative latent representations of 3D brain MRI",2026,Pattern Analysis and Applications,Springer,https://doi.org/10.1007/s10044-026-01765-1,

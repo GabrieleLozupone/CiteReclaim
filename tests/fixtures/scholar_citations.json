@@ -1,0 +1,6 @@
+{"citations": [
+  {"title": "POWDR: Pathology-Preserving Outpainting with Wavelet Diffusion for 3D MRI",
+   "author": [{"given": "Ana", "family": "Rossi"}], "issued": {"date-parts": [[2026]]},
+   "container-title": ["Diagnostics"], "DOI": "https://doi.org/10.3390/DIAGNOSTICS16152385"},
+  {"Title": "Some Thesis", "Authors": ["Dan Blu"], "Year": "2025", "Venue": "University of X"}
+]}
