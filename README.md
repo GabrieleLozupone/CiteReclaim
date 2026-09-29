@@ -45,10 +45,26 @@ pipx install git+https://github.com/GabrieleLozupone/CiteReclaim
 citereclaim init
 citereclaim scopus-sources update
 citereclaim paper add --name LDAE --arxiv 2504.08635 --doi 10.1016/j.media.2026.103932
+citereclaim scholar import LDAE.bib --paper LDAE --no-sync   # recommended, see the tip below
 citereclaim sync LDAE
 citereclaim report LDAE
-citereclaim export-support LDAE      # → output/LDAE/scopus_reference_linking.xlsx
+citereclaim export-support LDAE
 ```
+
+The last command writes the request, **ready to submit to Scopus support** in the two formats
+the support form accepts, to `output/LDAE/`:
+
+| Format | File | When to use it |
+|---|---|---|
+| Text for the form's *Subject* and *Your question* boxes | `scopus_support_request.txt` | A few corrections: paste version B, which lists every citation in the form's format |
+| Excel attachment | `scopus_reference_linking.xlsx` | Many corrections: paste the short version A and attach the file |
+
+> [!TIP]
+> **Import your Google Scholar "Cited by" list before syncing.** Google Scholar usually finds
+> more citing articles than the open indexes, for example recent articles or articles whose
+> publisher did not deposit its reference list. In Google Scholar, save the citing articles
+> to *My library*, select them and choose *Export → BibTeX*, then import the `.bib` file as
+> above. See [Importing Google Scholar results](#13-importing-google-scholar-results).
 
 No API key is required. Adding a free OpenAlex key and your email for Crossref makes runs
 faster, and a Scopus API key (usually from your institution's network) turns "likely" into
@@ -401,9 +417,14 @@ citereclaim paper add \
 
 ## 13. Importing Google Scholar results
 
+Importing Scholar's list is recommended: it usually finds citing articles that Semantic
+Scholar and OpenAlex miss, such as very recent articles or articles whose publisher did not
+deposit its reference list.
+
 1. Open your paper's "Cited by N" page in Google Scholar **in your browser**.
-2. Export the entries with a reference manager or Publish or Perish, or copy them into a
-   spreadsheet.
+2. Save the citing articles to *My library* (star icon), then in *My library* select them and
+   choose *Export → BibTeX*. A CSV from a reference manager or Publish or Perish, or a
+   hand-made spreadsheet, works too.
 3. Import the file:
 
 ```bash

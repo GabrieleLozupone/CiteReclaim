@@ -13,7 +13,7 @@ SCHOLAR_URL="https://scholar.google.com/citations"
 
 MSG="Time to check for citations missing from Scopus.
 
-1. In Google Scholar, open 'Cited by' for each paper → select all → export BibTeX.
+1. In Google Scholar, open 'Cited by' for each paper, save the citing articles to My library, select them → Export → BibTeX.
 2. Replace the files in scholar_exports/ (one per paper, e.g. <NAME>.bib).
 3. Connect to your institution's network/VPN (needed for the Scopus API).
 4. In the terminal run:  ./run.sh
