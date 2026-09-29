@@ -21,7 +21,7 @@ ENV_KEYS = (
     "CITERECLAIM_HOME",
 )
 
-PROJECT_URL = "https://github.com/GabrieleLozupone/citereclaim"
+PROJECT_URL = "https://github.com/GabrieleLozupone/CiteReclaim"
 
 
 def load_dotenv(path: Path) -> dict[str, str]:

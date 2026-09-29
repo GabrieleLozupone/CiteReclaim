@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Runs the whole citereclaim workflow:
+# Runs the whole CiteReclaim workflow:
 #   init → Scopus Source List update → paper import → Google Scholar import
 #   (scholar_exports/<NAME>.bib|.csv|.json, if present) → sync → report → export
 #

@@ -1,4 +1,4 @@
-# Design notes — citereclaim
+# Design notes — CiteReclaim
 
 Background research on the external services and the module layout. The user-facing
 documentation is the [README](../README.md).

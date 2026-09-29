@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs (or removes) a monthly citereclaim reminder on macOS.
+# Installs (or removes) a monthly CiteReclaim reminder on macOS.
 # Creates a LaunchAgent that runs scripts/remind.sh on day 1 of every month at 10:00.
 #
 # Usage:

@@ -2,7 +2,7 @@
 # Configure secrets: CROSSREF_MAILTO, OPENALEX_API_KEY, SEMANTIC_SCHOLAR_API_KEY
 # (and ELSEVIER_API_KEY / ELSEVIER_INSTTOKEN only if your entitlement allows use
 # from GitHub-hosted runners — Scopus keys are usually IP-bound to your institution).
-name: citereclaim weekly
+name: CiteReclaim weekly
 
 on:
   schedule:

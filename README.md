@@ -1,4 +1,4 @@
-<h1 align="center">citereclaim</h1>
+<h1 align="center">CiteReclaim</h1>
 
 <p align="center">
   <b>Find the citations Scopus misses because authors cited your arXiv preprint<br>
@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/GabrieleLozupone/citereclaim/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/GabrieleLozupone/citereclaim/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/GabrieleLozupone/CiteReclaim/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/GabrieleLozupone/CiteReclaim/actions/workflows/ci.yml/badge.svg"></a>
   <img alt="Python 3.12+" src="https://img.shields.io/badge/python-3.12%2B-3776AB">
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green"></a>
   <a href="https://github.com/astral-sh/ruff"><img alt="Ruff" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json"></a>
@@ -21,7 +21,7 @@ Record*) as separate documents, so those citations often never reach the journal
 its Scopus citation count stays lower than it should be. Google Scholar merges the two
 versions, which is why the gap is easy to miss.
 
-`citereclaim` finds these citations using free, public scholarly metadata, tells you which
+CiteReclaim finds these citations using free, public scholarly metadata, tells you which
 ones are likely affected and why, and produces an evidence pack in the format Scopus support
 asks for. You review it and send it yourself.
 
@@ -36,7 +36,7 @@ flowchart LR
 ### Quick start
 
 ```bash
-pipx install git+https://github.com/GabrieleLozupone/citereclaim
+pipx install git+https://github.com/GabrieleLozupone/CiteReclaim
 citereclaim init
 citereclaim scopus-sources update
 citereclaim paper add --name LDAE --arxiv 2504.08635 --doi 10.1016/j.media.2026.103932
@@ -79,7 +79,7 @@ verified results. See [API keys](#5-optional-api-keys).
 
 ## 1. What the tool does
 
-For each paper you track (arXiv id and/or final journal DOI), `citereclaim`:
+For each paper you track (arXiv id and/or final journal DOI), CiteReclaim:
 
 1. **Resolves both versions.** It finds the preprint and the Version of Record in Crossref,
    Semantic Scholar and OpenAlex. These indexes sometimes merge the two versions into one
@@ -286,15 +286,15 @@ Requires **Python 3.12+**.
 To use the command-line tool only:
 
 ```bash
-pipx install git+https://github.com/GabrieleLozupone/citereclaim
-# or: uv tool install git+https://github.com/GabrieleLozupone/citereclaim
+pipx install git+https://github.com/GabrieleLozupone/CiteReclaim
+# or: uv tool install git+https://github.com/GabrieleLozupone/CiteReclaim
 ```
 
 To work from a clone (needed for `run.sh`, the example files and the macOS reminder):
 
 ```bash
-git clone https://github.com/GabrieleLozupone/citereclaim.git
-cd citereclaim
+git clone https://github.com/GabrieleLozupone/CiteReclaim.git
+cd CiteReclaim
 python3.12 -m venv .venv && source .venv/bin/activate
 pip install -e .            # or: pip install -e ".[dev]" for tests/linting
 citereclaim --help
@@ -637,7 +637,7 @@ variables in the crontab.
 ```ini
 # ~/.config/systemd/user/citereclaim.service
 [Unit]
-Description=citereclaim weekly sync
+Description=CiteReclaim weekly sync
 
 [Service]
 Type=oneshot
@@ -648,7 +648,7 @@ ExecStartPost=%h/citereclaim/.venv/bin/citereclaim scopus-sources update
 
 # ~/.config/systemd/user/citereclaim.timer
 [Unit]
-Description=Run citereclaim weekly
+Description=Run CiteReclaim weekly
 
 [Timer]
 OnCalendar=Mon *-*-* 06:00:00
